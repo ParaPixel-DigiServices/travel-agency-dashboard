@@ -15,7 +15,7 @@ export const appwriteConfig = {
     "mock_trip_collection_id",
 };
 
-const isMock = appwriteConfig.projectId === "mock_project_id";
+const isMock = appwriteConfig.projectId === "mock_project_id" || import.meta.env.VITE_APPWRITE_MOCK_MODE === 'true';
 
 let client: Client;
 let account: Account;
@@ -23,7 +23,12 @@ let database: Databases;
 let storage: Storage;
 
 if (isMock) {
-  console.log("Using Mock Appwrite Client");
+  console.log("-----------------------------------------");
+  console.log("⚠️ TOURVISTO: RUNNING IN MOCK MODE");
+  console.log("Appwrite Backend is disconnected.");
+  console.log("Set VITE_APPWRITE_MOCK_MODE=false to use real backend.");
+  console.log("-----------------------------------------");
+  
   client = {
     setEndpoint: () => client,
     setProject: () => client,
@@ -47,6 +52,10 @@ if (isMock) {
 
   storage = {} as unknown as Storage;
 } else {
+    console.log("✅ Appwrite Client Initialized");
+    console.log("Endpoint:", appwriteConfig.endpointUrl);
+    console.log("Project:", appwriteConfig.projectId);
+
   client = new Client()
     .setEndpoint(appwriteConfig.endpointUrl)
     .setProject(appwriteConfig.projectId);
