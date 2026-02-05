@@ -15,7 +15,9 @@ export const appwriteConfig = {
     "mock_trip_collection_id",
 };
 
-const isMock = appwriteConfig.projectId === "mock_project_id" || import.meta.env.VITE_APPWRITE_MOCK_MODE === 'true';
+const isMock =
+  appwriteConfig.projectId === "mock_project_id" ||
+  import.meta.env.VITE_APPWRITE_MOCK_MODE === "true";
 
 let client: Client;
 let account: Account;
@@ -28,7 +30,7 @@ if (isMock) {
   console.log("Appwrite Backend is disconnected.");
   console.log("Set VITE_APPWRITE_MOCK_MODE=false to use real backend.");
   console.log("-----------------------------------------");
-  
+
   client = {
     setEndpoint: () => client,
     setProject: () => client,
@@ -52,9 +54,9 @@ if (isMock) {
 
   storage = {} as unknown as Storage;
 } else {
-    console.log("✅ Appwrite Client Initialized");
-    console.log("Endpoint:", appwriteConfig.endpointUrl);
-    console.log("Project:", appwriteConfig.projectId);
+  console.log("✅ Appwrite Client Initialized");
+  console.log("Endpoint:", appwriteConfig.endpointUrl);
+  console.log("Project:", appwriteConfig.projectId);
 
   client = new Client()
     .setEndpoint(appwriteConfig.endpointUrl)

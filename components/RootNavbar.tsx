@@ -1,46 +1,109 @@
-import React from 'react'
-import {Link, useLoaderData, useLocation, useNavigate, useParams} from "react-router";
-import {logoutUser} from "~/appwrite/auth";
-import {cn} from "~/lib/utils";
+import React from "react";
+import {
+  Link,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router";
+import { logoutUser } from "~/appwrite/auth";
+import { cn } from "~/lib/utils";
 
 const RootNavbar = () => {
-    const navigate = useNavigate();
-    const location = useLocation()
-    const params = useParams();
-    const user = useLoaderData();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = useParams();
+  const user = useLoaderData();
 
-    const handleLogout = async () => {
-        await logoutUser();
-        navigate('/sign-in')
-    }
+  const handleLogout = async () => {
+    await logoutUser();
+    navigate("/sign-in");
+  };
 
+  // If no user, show a minimal navbar
+  if (!user) {
     return (
-        <nav className={cn(location.pathname === `/travel/${params.tripId}` ? 'bg-white' : 'glassmorphism', 'w-full fixed z-50')}>
-            <header className="root-nav wrapper">
-                <Link to='/' className="link-logo">
-                    <img src="/assets/icons/logo.svg" alt="logo" className="size-[30px]" />
-                    <h1>Tourvisto</h1>
-                </Link>
+      <nav
+        className={cn(
+          location.pathname === `/travel/${params.tripId}`
+            ? "bg-white"
+            : "glassmorphism",
+          "w-full fixed z-50",
+        )}
+      >
+        <header className="root-nav wrapper">
+          <Link to="/" className="link-logo">
+            <img
+              src="/assets/icons/logo.svg"
+              alt="logo"
+              className="size-[30px]"
+            />
+            <h1>Tourvisto</h1>
+          </Link>
 
-                <aside>
-                    {user.status === 'admin' && (
-                        <Link to="/dashboard" className={cn('text-base font-normal text-white', {"text-dark-100": location.pathname.startsWith('/travel')})}>
-                            Admin Panel
-                        </Link>
-                    )}
+          <aside>
+            <Link
+              to="/sign-in"
+              className={cn(
+                "text-base font-normal text-white px-4 py-2 rounded-lg hover:bg-white/10",
+                { "text-dark-100": location.pathname.startsWith("/travel") },
+              )}
+            >
+              Sign In
+            </Link>
+          </aside>
+        </header>
+      </nav>
+    );
+  }
 
-                    <img src={user?.imageUrl || '/assets/images/david.wepb'} alt="user" referrerPolicy="no-referrer" />
+  return (
+    <nav
+      className={cn(
+        location.pathname === `/travel/${params.tripId}`
+          ? "bg-white"
+          : "glassmorphism",
+        "w-full fixed z-50",
+      )}
+    >
+      <header className="root-nav wrapper">
+        <Link to="/" className="link-logo">
+          <img
+            src="/assets/icons/logo.svg"
+            alt="logo"
+            className="size-[30px]"
+          />
+          <h1>Tourvisto</h1>
+        </Link>
 
-                    <button onClick={handleLogout} className="cursor-pointer">
-                        <img
-                            src="/assets/icons/logout.svg"
-                            alt="logout"
-                            className="size-6 rotate-180"
-                        />
-                    </button>
-                </aside>
-            </header>
-        </nav>
-    )
-}
-export default RootNavbar
+        <aside>
+          {user.status === "admin" && (
+            <Link
+              to="/dashboard"
+              className={cn("text-base font-normal text-white", {
+                "text-dark-100": location.pathname.startsWith("/travel"),
+              })}
+            >
+              Admin Panel
+            </Link>
+          )}
+
+          <img
+            src={user?.imageUrl || "/assets/images/david.wepb"}
+            alt="user"
+            referrerPolicy="no-referrer"
+          />
+
+          <button onClick={handleLogout} className="cursor-pointer">
+            <img
+              src="/assets/icons/logout.svg"
+              alt="logout"
+              className="size-6 rotate-180"
+            />
+          </button>
+        </aside>
+      </header>
+    </nav>
+  );
+};
+export default RootNavbar;

@@ -31,7 +31,7 @@ async function test() {
         console.log("Error Code:", error.code);
         console.log("Error Type:", error.type);
         console.log("---------------------\n");
-        
+
         if (error.message.includes("not accessible in this region")) {
             console.log("DIAGNOSIS: The Project ID exists, but it's restricted to a specific region.");
             console.log("ACTION: Please check your Appwrite Console Project Settings > Custom Domains/Settings to see the endpoint.");
